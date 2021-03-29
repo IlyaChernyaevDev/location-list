@@ -1,7 +1,7 @@
-import React, { useContext, useState } from 'react';
+import React from 'react';
+import { LocationsList } from './components/LocationList';
 
-import { observer } from 'mobx-react-lite';
-import { storeContext } from './store';
+import './App.css';
 
 export default function App() {
   return (
@@ -10,37 +10,3 @@ export default function App() {
     </div>
   );
 }
-
-const LocationForm = observer(function LocationForm() {
-  const store = useContext(storeContext);
-  store.fetchData();
-  if (!store.isLoaded) {
-    return <div>Данные не загружены</div>;
-  }
-  return <form><label></label></form>;
-});
-
-const LocationsList = () => {
-  const [locationsList, setLocationsList] = useState([{}]);
-  return (
-    <>
-      {locationsList.map((location, index) => (
-        <LocationForm key={`location-${index}`} />
-      ))}
-      <button
-        onClick={() => {
-          setLocationsList([...locationsList, {}]);
-        }}
-      >
-        Добавить тестовую локацию
-      </button>
-      <button
-        onClick={() => {
-          console.log(locationsList);
-        }}
-      >
-        Вывести результат в консоль
-      </button>
-    </>
-  );
-};

@@ -1,7 +1,7 @@
 import { makeAutoObservable, runInAction } from "mobx";
 
 import { createContext } from "react";
-import sample from "./data.json";
+import sample from "../data.json";
 
 function sleep(ms) {
   return new Promise((resolve) => setTimeout(resolve, ms));
