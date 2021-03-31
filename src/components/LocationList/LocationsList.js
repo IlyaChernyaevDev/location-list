@@ -1,30 +1,37 @@
 import React, { useState } from 'react';
 import { LocationForm } from '../LocationForm';
+import { storeLocationsList } from '../../store';
+import { v4 as uuidv4 } from 'uuid';
+import { observer } from 'mobx-react-lite';
 
-export const LocationsList = () => {
-  const [locationsList, setLocationsList] = useState([{}]);
+const storeLocation = storeLocationsList();
+
+export const LocationsList = observer(function LocationsList() {
   return (
     <>
-      {locationsList.map((location, index) => (
+      {storeLocation.storeLocationsList.map((location, index) => (
         <LocationForm
-          key={`location-${index}`}
-          setLocationsList={setLocationsList}
+          key={uuidv4()}
+          formID={location.formID}
+          storeLocation={storeLocation}
+          index={index}
+          count={++index}
         />
       ))}
       <button
-        onClick={() => {
-          setLocationsList([...locationsList, {}]);
+        onClick={(event) => {
+          storeLocation.addNewLocation(event);
         }}
       >
         Добавить тестовую локацию
       </button>
       <button
-        onClick={() => {
-          console.log(locationsList);
+        onClick={(event) => {
+          storeLocation.loggingStore(event);
         }}
       >
         Вывести результат в консоль
       </button>
     </>
   );
-};
+});

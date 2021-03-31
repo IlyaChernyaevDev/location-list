@@ -23,6 +23,10 @@ class Store {
     });
   };
 
+  inputHandler() {
+    
+  }
+
   constructor() {
     makeAutoObservable(this);
   }
