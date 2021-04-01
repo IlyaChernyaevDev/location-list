@@ -1,9 +1,10 @@
-import React, { useState, useContext } from 'react';
+import React, { useState, useContext, useEffect } from 'react';
 
-import { observer } from 'mobx-react-lite';
+import { Observer, observer } from 'mobx-react-lite';
 import { storeContext } from '../../store';
 import { v4 as uuidv4 } from 'uuid';
 import { selectComponent } from '../selectComponent/selectComponent';
+import { runInAction } from 'mobx';
 
 export const LocationForm = observer(function LocationForm({
   storeLocation,
@@ -13,7 +14,21 @@ export const LocationForm = observer(function LocationForm({
 }) {
   const store = useContext(storeContext);
 
-  store.fetchData();
+  useEffect(() => {
+    store.fetchData();
+    runInAction(() => {
+      storeLocation.updateServers(
+        store.servers,
+        index,
+        storeLocation.storeLocationsList[index].locationID,
+        storeLocation.storeLocationsList[index].envID
+      );
+    });
+  }, [
+    store,
+    storeLocation.storeLocationsList[index].locationID,
+    storeLocation.storeLocationsList[index].envID,
+  ]);
 
   if (!store.isLoaded) {
     return <div>Данные не загружены</div>;
@@ -30,15 +45,9 @@ export const LocationForm = observer(function LocationForm({
         <h2>Тестовая локация {count}</h2>
         <button
           type='button'
-          // onClick={() => {
-          //   setLocationsList((prevState) => {
-          //     const newArray = prevState.filter(
-          //       (location) =>
-          //         location.formID !== storeForm.storeLocationForm.formID
-          //     );
-          //     return [...newArray];
-          //   });
-          // }}
+          onClick={(event) => {
+            storeLocation.removeLocation(index, event);
+          }}
         >
           Delete
         </button>
@@ -48,7 +57,11 @@ export const LocationForm = observer(function LocationForm({
         <select
           value={storeLocation.storeLocationsList[index].locationID}
           onChange={(event) =>
-            storeLocation.inputHandler('locationID', event.target.value, formID)
+            storeLocation.inputHandler(
+              'locationID',
+              +event.target.value,
+              formID
+            )
           }
         >
           {store.locations.map(({ name, locationID }) => {
@@ -65,7 +78,7 @@ export const LocationForm = observer(function LocationForm({
         <select
           value={storeLocation.storeLocationsList[index].envID}
           onChange={(event) =>
-            storeLocation.inputHandler('envID', event.target.value, formID)
+            storeLocation.inputHandler('envID', +event.target.value, formID)
           }
         >
           {store.envs.map(({ name, envID }) => {
@@ -79,7 +92,11 @@ export const LocationForm = observer(function LocationForm({
       </label>
       <div>
         <p>Серверы</p>
-        {/* <p>{storeLocation.updateServers(store.servers, formID)}</p> */}
+        <p>
+          {storeLocation.storeLocationsList[index].servers.map(
+            ({ name }) => `${name}`
+          )}
+        </p>
       </div>
       <label>
         Подсказка

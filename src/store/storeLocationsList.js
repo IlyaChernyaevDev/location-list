@@ -1,4 +1,4 @@
-import { makeAutoObservable, toJS } from 'mobx';
+import { action, makeAutoObservable, toJS } from 'mobx';
 import { v4 as uuidv4 } from 'uuid';
 
 export function storeLocationsList() {
@@ -32,23 +32,12 @@ export function storeLocationsList() {
       }
     },
 
-    filterServersArray(serversArray, formID) {
-      const form = this.storeLocationsList.filter(
-        (location) => location.formID === formID
-      )[0];
-      // console.log(toJS(form));
-      form.servers = serversArray.filter(this.isCorrectServer);
-      // this.storeLocationsList.forEach((location) => {
-      //   if(location.formID === formID) {
-      //     location.servers = form.servers;
-      //   }
-      // })
-      return form.servers.map(({ name }) => `${name} `);
-    },
 
-    updateServers(serversArray, formID) {
-      let string = this.filterServersArray(serversArray, formID);
-      return `string`;
+    updateServers(serversArray, index, locationID, envID) {
+      this.storeLocationsList[index].servers = serversArray.filter(
+        (server) =>
+          server.locationID === locationID && server.envID === envID
+      );
     },
 
     addNewLocation(event) {
@@ -72,9 +61,18 @@ export function storeLocationsList() {
       });
     },
 
+    removeLocation(index, event) {
+      event.stopPropagation();
+      this.storeLocationsList.splice(index, 1);
+    },
+
     loggingStore(event) {
       event.preventDefault();
-      console.log(toJS(this.storeLocationsList));
+      let array = this.storeLocationsList.filter(({ isActive }) => isActive);
+      array = array.map(({ locationID, envID, hint }) => {
+        return { locationID, envID, hint };
+      });
+      console.log(toJS(array));
     },
-  });
+  },);
 }
