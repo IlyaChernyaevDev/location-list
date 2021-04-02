@@ -3,7 +3,7 @@ import React, { useContext, useEffect } from 'react';
 import { observer } from 'mobx-react-lite';
 import { storeContext } from '../../store';
 import { FormSelect } from '../FormSelect';
-import { FormHeader } from '../HeaderForm';
+import { FormHeader } from '../FormHeader';
 import { FormServers } from '../FormServers';
 
 export const LocationForm = observer(function LocationForm({
