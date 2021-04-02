@@ -1,0 +1,28 @@
+.form__select {
+  position: relative;
+  display: inline-block;
+  margin-right: 10px;
+}
+
+.form__select-icon {
+  position: absolute;
+  height: 2rem;
+}
+.form__select-icon_location {
+  left: 84px;
+}
+
+.form__select-icon_ip-address {
+  left: 63px;
+}
+  
+
+.form__select select {
+  margin-left: 10px;
+  line-height: 10px;
+  font-size: 14px;
+  padding: 5px;
+  padding-left: 25px;
+  border: 2px solid #e3e3e3;
+  border-radius: 4px;
+}

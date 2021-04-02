@@ -1,0 +1,12 @@
+.form__servers {
+  display: flex;
+  padding: 5px;
+  line-height: 15px;
+}
+.form__servers p {
+  margin: 0;
+}
+
+.form__servers svg {
+  margin: 0 5px 0 15px;
+}

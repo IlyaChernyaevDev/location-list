@@ -1,0 +1,15 @@
+.list__buttons {
+  display: flex;
+  justify-content: space-between;
+}
+
+.list__buttons button {
+  color: #008bc5;
+  font-size: 15px;
+  text-decoration: none;
+  background: #ffffff;
+  padding: 10px;
+  border: 2px solid #008bc5;
+  display: inline-block;
+  transition: all 0.4s ease 0s;
+}

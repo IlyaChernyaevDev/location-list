@@ -24,7 +24,7 @@ export function storeLocationsList() {
           },
         ],
         isActive: false,
-        formClassName: 'form',
+        formClassName: 'form_deactivated',
       },
     ],
 
@@ -33,13 +33,12 @@ export function storeLocationsList() {
         this.storeLocationsList[index].formClassName = 'form_active';
         this.storeLocationsList[index].isActive = true;
       } else {
-        this.storeLocationsList[index].formClassName = 'form';
+        this.storeLocationsList[index].formClassName = 'form_deactivated';
         this.storeLocationsList[index].isActive = false;
       }
     },
 
     updateServers(serversArray, index, locationID, envID) {
-      console.log(toJS(serversArray));
       if (serversArray.length >= 1) {
         this.storeLocationsList[index].servers = serversArray.filter(
           (server) => server.locationID === locationID && server.envID === envID
@@ -69,7 +68,7 @@ export function storeLocationsList() {
           },
         ],
         isActive: false,
-        formClassName: 'form',
+        formClassName: 'form_deactivated',
       });
     },
 
@@ -89,8 +88,8 @@ export function storeLocationsList() {
     loggingStore(event) {
       event.preventDefault();
       let array = this.storeLocationsList.filter(({ isActive }) => isActive);
-      array = array.map(({ locationID, envID, hint, servers }) => {
-        return { locationID, envID, hint, servers };
+      array = array.map(({ locationID, envID, hint }) => {
+        return { locationID, envID, hint };
       });
       console.log(toJS(array));
     },

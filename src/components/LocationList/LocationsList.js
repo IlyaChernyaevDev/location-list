@@ -1,8 +1,12 @@
 import React from 'react';
-import { LocationForm } from '../LocationForm';
-import { storeLocationsList } from '../../store';
+
 import { v4 as uuidv4 } from 'uuid';
 import { observer } from 'mobx-react-lite';
+
+import { storeLocationsList } from '../../store';
+import { LocationForm } from '../LocationForm';
+
+import './LocationList.css';
 
 const storeLocation = storeLocationsList();
 
@@ -18,20 +22,22 @@ export const LocationsList = observer(function LocationsList() {
           count={++index}
         />
       ))}
-      <button
-        onClick={(event) => {
-          storeLocation.addNewLocation(event);
-        }}
-      >
-        Добавить тестовую локацию
-      </button>
-      <button
-        onClick={(event) => {
-          storeLocation.loggingStore(event);
-        }}
-      >
-        Вывести результат в консоль
-      </button>
+      <div className={'list__buttons'}>
+        <button
+          onClick={(event) => {
+            storeLocation.addNewLocation(event);
+          }}
+        >
+          Добавить тестовую локацию
+        </button>
+        <button
+          onClick={(event) => {
+            storeLocation.loggingStore(event);
+          }}
+        >
+          Вывести результат в консоль
+        </button>
+      </div>
     </>
   );
 });
