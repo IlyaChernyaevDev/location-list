@@ -1,4 +1,4 @@
-import { action, makeAutoObservable, toJS } from 'mobx';
+import { makeAutoObservable, toJS } from 'mobx';
 import { v4 as uuidv4 } from 'uuid';
 
 export function storeLocationsList() {
@@ -9,18 +9,24 @@ export function storeLocationsList() {
         locationID: 1,
         envID: 1,
         hint: '',
-        servers: null,
+        servers: [
+          {
+            serverID: 41,
+            name: 'MPTEST41',
+            locationID: 1,
+            envID: 1,
+          },
+          {
+            serverID: 42,
+            name: 'MPTEST42',
+            locationID: 1,
+            envID: 1,
+          },
+        ],
         isActive: false,
         formClassName: 'form',
       },
     ],
-
-    isCorrectServer(server) {
-      return (
-        storeLocationsList.locationID === server.locationID &&
-        storeLocationsList.envID === server.envID
-      );
-    },
 
     activateForm(index) {
       if (!this.storeLocationsList[index].isActive) {
@@ -32,12 +38,13 @@ export function storeLocationsList() {
       }
     },
 
-
     updateServers(serversArray, index, locationID, envID) {
-      this.storeLocationsList[index].servers = serversArray.filter(
-        (server) =>
-          server.locationID === locationID && server.envID === envID
-      );
+      console.log(toJS(serversArray));
+      if (serversArray.length >= 1) {
+        this.storeLocationsList[index].servers = serversArray.filter(
+          (server) => server.locationID === locationID && server.envID === envID
+        );
+      }
     },
 
     addNewLocation(event) {
@@ -47,7 +54,20 @@ export function storeLocationsList() {
         locationID: 1,
         envID: 1,
         hint: '',
-        servers: null,
+        servers: [
+          {
+            serverID: 41,
+            name: 'MPTEST41',
+            locationID: 1,
+            envID: 1,
+          },
+          {
+            serverID: 42,
+            name: 'MPTEST42',
+            locationID: 1,
+            envID: 1,
+          },
+        ],
         isActive: false,
         formClassName: 'form',
       });
@@ -69,10 +89,10 @@ export function storeLocationsList() {
     loggingStore(event) {
       event.preventDefault();
       let array = this.storeLocationsList.filter(({ isActive }) => isActive);
-      array = array.map(({ locationID, envID, hint }) => {
-        return { locationID, envID, hint };
+      array = array.map(({ locationID, envID, hint, servers }) => {
+        return { locationID, envID, hint, servers };
       });
       console.log(toJS(array));
     },
-  },);
+  });
 }

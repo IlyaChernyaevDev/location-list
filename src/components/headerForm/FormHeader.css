@@ -1,0 +1,14 @@
+.button {
+  width: 35px;
+  height: 35px;
+  margin: 3px;
+  font-size: 17px;
+  border: none;
+  cursor: pointer;
+}
+
+.fa-trash-alt {
+  width: 30px;
+  height: 30px;
+  color: red;
+}

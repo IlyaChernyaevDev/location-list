@@ -1,10 +1,11 @@
 .App {
-  width: 500px;
-  margin: auto;
+  margin: 50px auto 50px auto;
+  width: 700px;
 }
 
 .form {
   border: 2px solid black;
+  margin-bottom: 10px;
 }
 
 .form_active {
@@ -20,3 +21,4 @@
   font-size: 1em;
   line-height: 1em;
 }
+

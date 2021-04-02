@@ -1,10 +1,10 @@
-import React, { useState, useContext, useEffect } from 'react';
+import React, { useContext, useEffect } from 'react';
 
-import { Observer, observer } from 'mobx-react-lite';
+import { observer } from 'mobx-react-lite';
 import { storeContext } from '../../store';
-import { v4 as uuidv4 } from 'uuid';
-import { selectComponent } from '../selectComponent/selectComponent';
-import { runInAction } from 'mobx';
+import { FormSelect } from '../FormSelect';
+import { FormHeader } from '../HeaderForm';
+import { FormServers } from '../FormServers';
 
 export const LocationForm = observer(function LocationForm({
   storeLocation,
@@ -16,16 +16,17 @@ export const LocationForm = observer(function LocationForm({
 
   useEffect(() => {
     store.fetchData();
-    runInAction(() => {
+    if (store.servers.length >= 1) {
       storeLocation.updateServers(
         store.servers,
         index,
         storeLocation.storeLocationsList[index].locationID,
         storeLocation.storeLocationsList[index].envID
       );
-    });
+    }
   }, [
     store,
+    storeLocation.storeLocationsList,
     storeLocation.storeLocationsList[index].locationID,
     storeLocation.storeLocationsList[index].envID,
   ]);
@@ -33,7 +34,6 @@ export const LocationForm = observer(function LocationForm({
   if (!store.isLoaded) {
     return <div>Данные не загружены</div>;
   }
-
   return (
     <form
       className={storeLocation.storeLocationsList[index].formClassName}
@@ -41,63 +41,30 @@ export const LocationForm = observer(function LocationForm({
         storeLocation.activateForm(index);
       }}
     >
-      <header className='form__header'>
-        <h2>Тестовая локация {count}</h2>
-        <button
-          type='button'
-          onClick={(event) => {
-            storeLocation.removeLocation(index, event);
-          }}
-        >
-          Delete
-        </button>
-      </header>
-      <label className='form__input'>
-        Локация
-        <select
-          value={storeLocation.storeLocationsList[index].locationID}
-          onChange={(event) =>
-            storeLocation.inputHandler(
-              'locationID',
-              +event.target.value,
-              formID
-            )
-          }
-        >
-          {store.locations.map(({ name, locationID }) => {
-            return (
-              <option value={locationID} key={uuidv4()}>
-                {name}
-              </option>
-            );
-          })}
-        </select>
-      </label>
-      <label>
-        Среда
-        <select
-          value={storeLocation.storeLocationsList[index].envID}
-          onChange={(event) =>
-            storeLocation.inputHandler('envID', +event.target.value, formID)
-          }
-        >
-          {store.envs.map(({ name, envID }) => {
-            return (
-              <option value={envID} key={uuidv4()}>
-                {name}
-              </option>
-            );
-          })}
-        </select>
-      </label>
-      <div>
-        <p>Серверы</p>
-        <p>
-          {storeLocation.storeLocationsList[index].servers.map(
-            ({ name }) => `${name}`
-          )}
-        </p>
-      </div>
+      <FormHeader count={count} storeLocation={storeLocation} index={index} />
+      <FormSelect
+        selectorName={'Локация'}
+        storeLocation={storeLocation}
+        propertyName={'locationID'}
+        formID={formID}
+        storeMain={store.locations}
+        index={index}
+      />
+      <FormSelect
+        selectorName={'Среда'}
+        storeLocation={storeLocation}
+        propertyName={'envID'}
+        formID={formID}
+        storeMain={store.envs}
+        index={index}
+      />
+      <FormServers
+        storeMain={store}
+        storeLocation={storeLocation}
+        index={index}
+        locationID={storeLocation.storeLocationsList[index].locationID}
+        envID={storeLocation.storeLocationsList[index].envID}
+      />
       <label>
         Подсказка
         <input
