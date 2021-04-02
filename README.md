@@ -2,6 +2,11 @@
 
 Сделать форму создания «тестовой локации».
 
+## Deployment instructions
+1. Clone repository or download the archive
+2. Install dependencies in console `npm install`
+3. Launch a server `npm start`
+
 ## На входе
 
 Mobx store, который подтягивает данные по локациям, средам и серверам.
